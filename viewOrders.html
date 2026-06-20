@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Boba Orders</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f4f4;
+    text-align:center;
+}
+
+h1{
+    color:#6a1b9a;
+}
+
+.order{
+    background:white;
+    margin:15px auto;
+    padding:15px;
+    width:350px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+
+.status{
+    color:white;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+    margin-right:10px;
+}
+
+.received{
+    background:gray;
+}
+
+.preparing{
+    background:orange;
+}
+
+.ready{
+    background:green;
+}
+
+.completed{
+    background:blue;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>All Boba Orders</h1>
+<button onclick="logout()">
+Logout
+</button>
+
+<button onclick="loadOrders()">
+Load Orders
+</button>
+
+<div id="orders"></div>
+
+<script>
+
+    if(localStorage.getItem("loggedIn") !== "true"){
+
+    window.location.href = "login.html";
+
+}
+
+async function loadOrders(){
+
+    const response = await fetch(
+    "https://ba8g5aa3y1.execute-api.us-east-2.amazonaws.com/default/viewOrdersFunction"
+    );
+
+    const orders = await response.json();
+
+    let html = "";
+
+   orders.forEach(order => {
+
+    html += `
+    <div class="order">
+
+        <h3>${order.drink}</h3>
+
+        <p>Name: ${order.customerName}</p>
+
+        <p>Phone: ${order.phone}</p>
+
+        <p>Size: ${order.size}</p>
+
+        <p>Sugar: ${order.sugar}</p>
+
+        <p>Ice: ${order.ice}</p>
+
+        <p>Topping: ${order.topping}</p>
+
+        <p>Quantity: ${order.quantity}</p>
+
+        <p>Total: $${order.totalPrice}</p>
+
+        <p>Instructions: ${order.instructions}</p>
+
+        
+
+    <p>
+Status:
+<span class="status ${order.status.toLowerCase()}">
+    ${order.status}
+</span>
+
+<select onchange="updateStatus('${order.orderId}', this.value)">
+    <option ${order.status === "Received" ? "selected" : ""}>
+        Received
+    </option>
+
+    <option ${order.status === "Preparing" ? "selected" : ""}>
+        Preparing
+    </option>
+
+    <option ${order.status === "Ready" ? "selected" : ""}>
+        Ready
+    </option>
+
+    <option ${order.status === "Completed" ? "selected" : ""}>
+        Completed
+    </option>
+</select>
+</p>
+
+        <p>Time: ${order.timestamp}</p>
+
+        <small>${order.orderId}</small>
+
+        <br><br>
+
+        <button onclick="deleteOrder('${order.orderId}')">
+            Delete Order
+        </button>
+
+    </div>
+    `;
+});
+
+    document.getElementById("orders").innerHTML = html;
+
+}
+
+
+async function deleteOrder(orderId){
+
+    const response = await fetch(
+    "https://1jhvbjg5z6.execute-api.us-east-2.amazonaws.com/default/deleteOrderFunction",
+    {
+        method:"POST",
+
+        body: JSON.stringify({
+            orderId: orderId
+        })
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    setTimeout(() => {
+        loadOrders();
+    },500);
+
+}
+
+async function updateStatus(orderId, status){
+
+    const response = await fetch(
+    "https://i1zqomn5uf.execute-api.us-east-2.amazonaws.com/default/updateStatusFunction",
+    {
+        method: "POST",
+
+        body: JSON.stringify({
+            orderId: orderId,
+            status: status
+        })
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    setTimeout(() => {
+        loadOrders();
+    }, 500);
+
+}
+
+
+function logout(){
+
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("role");
+
+    window.location.href = "login.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

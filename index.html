@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Boba Ordering App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+   <div class="container">
+
+<div style="text-align:right;">
+    <button class="login-btn"
+        onclick="window.location.href='login.html'">
+        Employee Login
+    </button>
+</div>
+
+<h1>Boba Ordering App 🧋</h1>
+
+<label>Drink</label>
+<select id="drink">
+
+    <option>Brown Sugar Milk Tea</option>
+    <option>Taro Milk Tea</option>
+    <option>Thai Tea</option>
+
+</select>
+
+<br><br>
+
+<label>Size</label>
+<select id="size">
+
+    <option>Small</option>
+    <option>Medium</option>
+    <option>Large</option>
+
+</select>
+
+<br><br>
+
+<label>Sugar Level</label>
+<select id="sugar">
+
+    <option>0%</option>
+    <option>50%</option>
+    <option>100%</option>
+
+</select>
+
+<br><br>
+
+<label>Ice Level</label>
+<select id="ice">
+
+    <option>No Ice</option>
+    <option>Less Ice</option>
+    <option>Regular Ice</option>
+
+</select>
+
+<label>Topping</label>
+
+<select id="topping">
+
+    <option>Boba Pearls</option>
+    <option>Pudding</option>
+    <option>Grass Jelly</option>
+    <option>No Topping</option>
+
+</select>
+
+<br><br>
+
+
+<label>Customer Name:</label>
+<input type="text" id="customerName">
+
+<br><br>
+
+<label>Phone Number:</label>
+<input type="text" id="phone">
+
+<br><br>
+
+<label>Email:</label>
+<input type="email" id="email">
+
+<br><br>
+
+<label>Quantity:</label>
+<input type="number" id="quantity" value="1">
+
+<br><br>
+
+<label>Special Instructions:</label>
+<input type="text" id="instructions">
+
+<br><br>
+<button onclick="placeOrder()">
+Place Order
+</button>
+
+<h2 id="result"></h2>
+
+
+
+</ul>
+
+<script src="script.js"></script>
+</div>
+</body>
+</html>
